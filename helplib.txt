@@ -1,0 +1,7 @@
+https://mastergroosha.github.io/aiogram-3-guide/buttons/#callback-factory
+https://github.com/MasterGroosha/aiogram-3-guide/blob/master/code/03_buttons/bot.py
+https://github.com/MasterGroosha/telegram-bombsweeper-bot/blob/master/bot/handlers/callbacks.py
+https://docs.aiogram.dev/en/dev-3.x/api/types/message.html#aiogram.types.message.Message.answer
+https://github.com/noXplode/aiogram_calendar/tree/master
+
+https://python-redmine.com/resources/time_entry.html
