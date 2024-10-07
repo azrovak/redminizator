@@ -10,5 +10,5 @@ router = Router()
 
 
 @router.message(Command('tasks'))
-async def task_handler(msg: Message):
+async def tasks_list_buttons(msg: Message):
     await msg.answer(f'Мои задачи', reply_markup=get_tasks_links_keyboard())

@@ -14,7 +14,6 @@ from handlers import tasks, time_entries
 from callbacks.time_entries import *
 from keyboards.tasks import NumbersCallbackFactory
 
-
 #
 # @router.message(Command('info'))
 # async def info(message: Message):
@@ -39,12 +38,32 @@ from keyboards.tasks import NumbersCallbackFactory
 #     await callback.message.answer(f'Выбранная задача: {callback_data.value} ')
 #     await callback.answer()
 
+bot = Bot(token=config.bot_token.get_secret_value(), default=DefaultBotProperties(parse_mode='HTML'))
+dp = Dispatcher(storage=MemoryStorage())
+CHECKER_FLAG = False
+
+
+async def checker(chat_id):
+    while CHECKER_FLAG:
+        await bot.send_message(chat_id, 'checker')
+        await asyncio.sleep(5)
+
+
+@dp.message(Command('checktimes'))
+async def last_entries_handler(msg: Message):
+    CHECKER_FLAG = True
+    asyncio.run_coroutine_threadsafe(checker(msg.chat.id), asyncio.get_event_loop())
+
+
+@dp.message(Command('checktimesstop'))
+async def last_entries_handler(msg: Message):
+    CHECKER_FLAG = False
+
 
 async def main():
     logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
-    bot = Bot(token=config.bot_token.get_secret_value(), default=DefaultBotProperties(parse_mode='HTML'))
-    dp = Dispatcher(storage=MemoryStorage())
-    dp.include_routers(time_entries.router)
+
+    dp.include_routers(time_entries.router, tasks.router)
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
 

@@ -3,19 +3,14 @@ from typing import Optional
 from aiogram.filters.callback_data import CallbackData
 from aiogram.types import InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-from redminelib import Redmine
 
-from config import config, redmine
+from config import config
+from redmine_utils import _get_issues
 
 
 class NumbersCallbackFactory(CallbackData, prefix="fabnum"):
     action: str
     value: Optional[int] = None
-
-
-def _get_issues():
-    user = redmine.user.get('current')
-    return user.issues
 
 
 def get_tasks_links_keyboard():
