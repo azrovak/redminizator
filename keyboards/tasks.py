@@ -5,7 +5,7 @@ from aiogram.types import InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from config import config
-from redmine_utils import _get_issues
+from utils.redmine import get_issues
 
 
 class NumbersCallbackFactory(CallbackData, prefix="fabnum"):
@@ -15,7 +15,7 @@ class NumbersCallbackFactory(CallbackData, prefix="fabnum"):
 
 def get_tasks_links_keyboard():
     builder = InlineKeyboardBuilder()
-    for i in _get_issues():
+    for i in get_issues():
         builder.row(InlineKeyboardButton(
             text=i.subject, url=f"{config.host}/issues/{i.id}")
         )
@@ -24,7 +24,7 @@ def get_tasks_links_keyboard():
 
 def get_tasks_keyboard(action=None):
     builder = InlineKeyboardBuilder()
-    for i in _get_issues():
+    for i in get_issues():
         builder.button(text=i.subject, callback_data=NumbersCallbackFactory(action=action, value=i.id))
         # builder.button(text=i.subject, callback_data="time_data")
     builder.adjust(1)

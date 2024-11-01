@@ -1,35 +1,25 @@
-import asyncio
-
 from aiogram import Router
 
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
-from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message
 from aiogram.utils.formatting import as_list, Bold
 
+from callbacks.time_entries import get_last_entries
 from keyboards.common import get_accept_keyboard
 from keyboards.tasks import get_tasks_keyboard
-from redmine_utils import get_last_entries
+from states.entry import SetEntry
 
 router = Router()
 
 
-class SetEntry(StatesGroup):
-    choosing_task = State()
-    choosing_date = State()
-    choosing_hour = State()
-    choosing_comment = State()
-
-
-
-@router.message(Command('lastentries'))
+@router.message(Command('last_entries'))
 async def last_entries_handler(msg: Message):
-    content = await get_last_entries(7)
+    content = await get_last_entries(5)
     await msg.answer(**content.as_kwargs())
 
 
-@router.message(Command('addentries'))
+@router.message(Command('add_entries'))
 async def add_entries_handler(msg: Message, state: FSMContext):
     await msg.answer(**Bold('Выбери задачу:').as_kwargs(), reply_markup=get_tasks_keyboard('choosing_task'))
     await state.set_state(SetEntry.choosing_task)
