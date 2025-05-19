@@ -6,3 +6,8 @@ class SetEntry(StatesGroup):
     choosing_date = State()
     choosing_hour = State()
     choosing_comment = State()
+
+class SetDayEntry(StatesGroup):
+    choosing_task = State()
+    choosing_hour = State()
+    choosing_comment = State()

@@ -13,6 +13,10 @@ def get_time_entries():
     user = redmine.user.get('current')
     return user.time_entries
 
+def get_time_entry_today():
+    user = redmine.user.get('current')
+    _te = user.time_entries.filter(spent_on=datetime.datetime.now().date().isoformat())
+    return _te
 
 def get_empty_times():
     time_entries = get_time_entries()[:1][0]

@@ -8,7 +8,7 @@ from aiogram.utils.formatting import as_list, Bold
 from callbacks.time_entries import get_last_entries
 from keyboards.common import get_accept_keyboard
 from keyboards.tasks import get_tasks_keyboard
-from states.entry import SetEntry
+from states.entry import SetEntry, SetDayEntry
 
 router = Router()
 
@@ -44,6 +44,18 @@ async def choosing_comment(message: Message, state: FSMContext):
                       f'Комментарий: {message.text}',
                       )
     await message.answer(**content.as_kwargs(), reply_markup=get_accept_keyboard((("Сохранить", "save_time_entry"),)))
+
+@router.message(SetDayEntry.choosing_comment)
+async def choosing_comment(message: Message, state: FSMContext):
+    entry_data = await state.get_data()
+    await state.update_data(choosen_comment=message.text)
+    content = as_list(Bold('Данные для добавления:'),
+                      f'Задача: {entry_data["choosen_task"]}',
+                      f'Часы: {entry_data["choosen_hour"]}',
+                      f'Комментарий: {message.text}',
+                      )
+    await message.answer(**content.as_kwargs(),
+                         reply_markup=get_accept_keyboard((("Сохранить", "save_time_entry"),)))
 
     # await state.set_state(SetEntry.choosing_date)
     # await callback.answer()

@@ -9,7 +9,7 @@ from utils.redmine import get_issues
 
 
 class NumbersCallbackFactory(CallbackData, prefix="fabnum"):
-    action: str
+    action: str|None
     value: Optional[int] = None
 
 
